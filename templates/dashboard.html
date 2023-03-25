@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    margin-top: 20px;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Welcome, {{ username }}!</h1>
+    <p>Current loan amount: {{ current_loan_amount }}</p>
+    <p>Maximum loan amount: {{ max_loan_amount }}</p>
+    <form method="POST" action="/request_loan">
+        <label for="loan_amount">Loan amount:</label>
+        <input type="number" id="loan_amount" name="loan_amount" min="1" max="{{ max_loan_amount - current_loan_amount }}" required>
+        <input type="submit" value="Request loan">
+    </form>
+    <h2>Pending loan requests:</h2>
+    <ul>
+        {% for loan_id, loan_amount in pending_loans.items() %}
+        <li>Loan request {{ loan_id }}: {{ loan_amount }} <a href="/approve_loan/{{ loan_id }}">Approve/reject</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
